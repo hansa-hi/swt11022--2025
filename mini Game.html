@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typing Game</title>
+    <link rel="stylesheet" href="mini-Gamestyle.css" />
+  </head>
+  <body id="body">
+    <div class="Game-section">
+      <div id="Game-header">
+        <h1 id="heading1">Typing Game</h1>
+      </div>
+
+      <div class="Game-middle">
+        <div class="alphabet-letter">
+          <h2 id="display">Key</h2>
+        </div>
+      </div>
+
+      <div class="show-inputs">
+        <div class="correct-input">
+          <h2>Correct</h2>
+          <span id="correct">0 </span>
+        </div>
+        <div class="missed-input">
+          <h2>Missing</h2>
+          <span id="missed">0</span>
+        </div>
+        <div class="wrong-input">
+          <h2>Wrong</h2>
+          <span id="wrong">0</span>
+        </div>
+        
+      </div>
+      <progress value="0" max="100"></progress>
+    </div>
+    <div class="speed-controlor">
+      <label for="speed">Speed</label>
+      <input type="range" id="speed" min="100" max="1000" />
+    </div>
+
+    <script>
+      const display = document.getElementById("display");
+      const correct = document.getElementById("correct");
+      const wrong = document.getElementById("wrong");
+      const Missed = document.getElementById("missed");
+      const progress = document.querySelector("progress");
+      const SpeedControl = document.getElementById("speed");
+      correct.style.fontSize = "3.5rem";
+      wrong.style.fontSize = "3.5rem";
+      Missed.style.fontSize = "3.5rem";
+      function randomLetter() {
+        const alphabet = [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "q",
+          "r",
+          "s",
+          "t",
+          "u",
+          "v",
+          "u",
+          "w",
+          "x",
+          "z",
+        ];
+
+        const randomIndex = Math.floor(Math.random() * alphabet.length);
+        return alphabet[randomIndex];
+      }
+
+      display.innerHTML = randomLetter();
+
+      document.getElementById("body").addEventListener("keyup", function (e) {
+        if (e.key == display.innerHTML) {
+          correct.innerHTML++;
+        } else {
+          wrong.innerHTML++;
+        }
+        display.innerHTML = randomLetter();
+        StartTimer();
+      });
+      let delay = 1000;
+      let timer;
+      function StartTimer() {
+        progress.value = 0;
+        clearInterval(timer);
+        timer = setInterval(function () {
+          progress.value += 10;
+          if (progress.value >= 100) {
+            display.innerHTML = randomLetter();
+            Missed.innerHTML++;
+            StartTimer();
+          }
+        }, delay);
+      }
+
+      SpeedControl.onchange = function () {
+        delay = 1000 - SpeedControl.value;
+        StartTimer();
+      };
+    </script>
+  </body>
+</html>
